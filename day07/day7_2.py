@@ -60,8 +60,12 @@ def getDirSize(key_list, dictionary):
 
 getDirSize(['/'], fs['/'])
 
-filtered_dict = dict(filter(lambda pair: pair[1] <= 100000, directory_sizes.items()))
+disk_size = 70000000
+needed_space = 30000000
+total_used = directory_sizes['']
+free_disk = disk_size - total_used
 
-summation = sum(filtered_dict.values())
+filtered_dict = dict(filter(lambda pair: pair[1] >= (needed_space - free_disk), directory_sizes.items()))
 
-print(summation)
+smallest = min(filtered_dict.values())
+print(smallest)
