@@ -1,5 +1,3 @@
-import itertools
-
 f = open("day08/input.txt")
 
 lines = [ [int(c) for c in [*l.strip()]] for l in f.readlines() ] 
