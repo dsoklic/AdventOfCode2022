@@ -1,54 +1,24 @@
-f = open("day08/sample.txt")
+import itertools
+
+f = open("day08/input.txt")
 
 lines = [ [int(c) for c in [*l.strip()]] for l in f.readlines() ] 
 
-def visible_horizontal(y, reverse):
-  global lines
+visible = 4 * len(lines) - 4
 
-  visible_in_line = 0
+for x in range(1, len(lines)-1):
+  for y in range(1, len(lines)-1):
+    current = lines[y][x]
 
-  max_height = -1
+    vertical_slice = [ lines[i][x] for i in [i for i in range(len(lines))] ]
 
-  if not reverse:
-    range_used = range(len(lines[y]))
-  else:
-    range_used = range(-(len(lines[y])), 0)
+    # Check if this is the tallest tree to the left
+    tallest_left = all([tree < current for tree in lines[y][0:x]])
+    tallest_right = all([tree < current for tree in lines[y][x+1:len(lines)]])
+    tallest_up = all([tree < current for tree in vertical_slice[0:y]])
+    tallest_down = all([tree < current for tree in vertical_slice[y+1:len(lines)]])
 
-  for x in range_used:
-    height = lines[y][x]
-    if height > max_height:
-      visible_in_line += 1
-      max_height = height
-  
-  return visible_in_line
-
-def visible_vertical(x, reverse):
-  global lines
-
-  visible_in_line = 0
-
-  max_height = -1
-
-  if not reverse:
-    range_used = range(len(lines))
-  else:
-    range_used = range(-(len(lines)), 0)
-
-  for y in range_used:
-    height = lines[y][x]
-    if height > max_height:
-      visible_in_line += 1
-      max_height = height
-
-  return visible_in_line
-
-visible = 0
-
-for i in range(len(lines)):
-  visible += visible_vertical(i, False)
-  visible += visible_vertical(i, True)
-
-  visible += visible_horizontal(i, False)
-  visible += visible_horizontal(i, True)
+    if tallest_left or tallest_right or tallest_up or tallest_down:
+      visible += 1
 
 print(visible)
