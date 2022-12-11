@@ -1,4 +1,5 @@
 import re
+from functools import reduce
 
 f = open("day11/input.txt")
 
@@ -43,14 +44,16 @@ for monkey in data:
         'inspections': 0
     })
 
-for _ in range(20):
+# Common devisor is the product of all devisibility test numbers
+common_devisor = reduce((lambda x, y: x * y), [x['test_divisibility'] for x in monkies])
+
+for _ in range(10000):
     for monkey in monkies:
         for item in monkey['items']:
             monkey['inspections'] += 1
 
             item = inspect(item, monkey['operation'])
-            item /= 3 # lose interest
-            item = int(item)
+            item = int(item) % common_devisor
 
             # Is divisible?
             if item % monkey['test_divisibility'] == 0:
