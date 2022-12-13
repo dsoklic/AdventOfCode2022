@@ -37,10 +37,6 @@ def compare(left, right):
 data.append([[2]])
 data.append([[6]])
 
-def comparator(l, r):
-    return compare(l,r)
-
-
 data = sorted(data, key=cmp_to_key(compare))
 
 first = data.index([[2]]) + 1
