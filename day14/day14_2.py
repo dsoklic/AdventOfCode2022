@@ -22,7 +22,7 @@ for line in lines:
     for it in product(x_spread,y_spread):
       stationary_points.add(it)
 
-lowest_point = max([y for x,y in stationary_points])
+floor = max([y for x,y in stationary_points]) + 2
 
 sand_count = 0
 
@@ -33,6 +33,9 @@ while running:
 
   current = [500, 0]
   while True:
+    if current[1] == floor - 1:
+      stationary_points.add(tuple(current))
+      break
     if (current[0], current[1]+1) not in stationary_points:
       current[1] += 1
     elif (current[0]-1, current[1]+1) not in stationary_points:
@@ -44,10 +47,9 @@ while running:
     else:
       # rest
       stationary_points.add(tuple(current))
+
+      if (current[0],current[1]) == (500,0):
+        running = False
       break
 
-    if current[1] >= lowest_point:
-      running = False
-      break
-
-print(sand_count-1)
+print(sand_count)
